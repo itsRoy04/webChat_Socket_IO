@@ -34,6 +34,15 @@ app.post('/messages', (req, res) => {
         if (err)
             sendStatus(500)
 
+            Message.findOne({message: "Fuck"},(err,censored)=>{
+                if(censored){
+                    console.log("Censored Words Found",censored)
+                    Message.deleteOne({_id : censored.id},(err)=>{
+                        console.log("Censored Message")
+                    })
+                }
+            })
+
         io.emit('message', req.body)
         res.sendStatus(200)
     })
